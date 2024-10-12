@@ -1,25 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-<diV class="max-w-md">
-<ul class="flex justify-between">
-    <li><h2 class="text-gray-800">ASSIGN TABLE</h2></li>
-    <li class="rounded-xl">
-        <select>
-            {% for table in tables %}
-                <option>{{ table.number }}</option>
-            {% endfor %}
-        </select>
-    </li>
-    <li class="rounded-xl">
+<div class="space-y-8">  <!-- Space between sections -->
+    <div class="flex justify-around space-x-8">  <!-- Space between each flex element -->
+        <ul class="flex w-2/3 space-x-8 justify-start">  <!-- Adjusted spacing between list items -->
+            <li><h2 class="text-gray-800 self-center text-2xl">ASSIGN TABLE</h2></li>
 
-        <select>
-            {% for server in servers %}
-                <option>{{ server.name }}</option>
-            {% endfor %}
-        </select>
-    </li>
+            <li class="rounded-xl">
+                <select class="p-2 rounded-md border border-gray-300">
+                    <option placeholder="Open Tables">Open tables</option>
+                    {% for table in tables %}
+                        <option>{{ table.number }}</option>
+                    {% endfor %}
+                </select>
+            </li>
 
-</ul>
-</diV>
+            <li class="rounded-xl">
+                <select class="p-2 rounded-md border border-gray-300">
+                    {% for server in servers %}
+                        <option>{{ server.name }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+
+            <li>
+                <form method="POST">
+                    <button class="p-2 px-7 bg-blue-500 text-white rounded-md" type="submit">ASSIGN</button>
+                </form>
+            </li>
+        </ul>
+
+        <div>
+            <form method="POST" action="{{ url_for('session.logout') }}">
+                <button class="p-2 px-7 bg-blue-500 text-white rounded-md" type="submit">LOG OUT </button>
+            </form>
+        </div>
+    </div>
+
+    <h2 class="my-8 text-2xl">YOUR OPEN ORDERS</h2> <!-- Added margin above the orders section -->
+</div>
 {% endblock %}
