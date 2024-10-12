@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Order Up!</h1>
+<diV class="max-w-md">
+<ul class="flex justify-between">
+    <li><h2 class="text-gray-800">ASSIGN TABLE</h2></li>
+    <li class="rounded-xl">
+        <select>
+            {% for table in tables %}
+                <option>{{ table.number }}</option>
+            {% endfor %}
+        </select>
+    </li>
+    <li class="rounded-xl">
+
+        <select>
+            {% for server in servers %}
+                <option>{{ server.name }}</option>
+            {% endfor %}
+        </select>
+    </li>
+
+</ul>
+</diV>
 {% endblock %}
