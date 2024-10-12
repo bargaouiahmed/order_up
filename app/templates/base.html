@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <div class="flex justify-around max-w-3xl">
+  <div class="flex justify-around max-w-6xl">
   {% block content %}{% endblock %}
   {% if not current_user.is_anonymous %}
     <form method="POST" action="{{ url_for('session.logout') }}">
