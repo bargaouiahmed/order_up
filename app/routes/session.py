@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from flask_login import current_user, login_user  # Import current_user and login_user
-from app.form import LoginForm
+from flask_login import current_user, login_user, logout_user # Import current_user and login_user
+from app.forms import LoginForm
 from app.models import Employee  # Ensure you have the Employee model and LoginForm properly defined
 
 bp = Blueprint('session', __name__, url_prefix='/session')
