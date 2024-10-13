@@ -5,7 +5,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Initialize SQLAlchemy
 db = SQLAlchemy()
 
-# Employee model (User for login system)
 class Employee(db.Model, UserMixin):
     __tablename__ = 'employees'  # Define the table name
 
@@ -26,42 +25,13 @@ class Employee(db.Model, UserMixin):
         return check_password_hash(self.hashed_password, password)
 
 
-# Menu model
-class Menu(db.Model):
-    __tablename__ = 'menus'  # Correct table name
-    id = db.Column(db.Integer, primary_key=True)  # Primary key
-    name = db.Column(db.String(30), nullable=False)  # Name of the menu, not nullable
-
-    # One-to-many relationship with MenuItem
-    items = db.relationship('MenuItem', backref='menu', lazy=True)
-
-
-# MenuItemType model
-class MenuItemType(db.Model):
-    __tablename__ = 'menu_item_types'  # Correct table name
-    id = db.Column(db.Integer, primary_key=True)  # Primary key
-    name = db.Column(db.String(20), nullable=False)  # Type name, not nullable
-
-    # One-to-many relationship with MenuItem
-    items = db.relationship('MenuItem', backref='type', lazy=True)
-
-
-# MenuItem model
-class MenuItem(db.Model):
-    __tablename__ = 'menu_items'  # Correct table name
-    id = db.Column(db.Integer, primary_key=True)  # Primary key
-    name = db.Column(db.String(50), nullable=False)  # Item name, not nullable
-    price = db.Column(db.Float, nullable=False)  # Price, not nullable
-
-    # Foreign keys to Menu and MenuItemType
-    menu_id = db.Column(db.Integer, db.ForeignKey('menus.id'), nullable=False)  # Menu foreign key
-    menu_type_id = db.Column(db.Integer, db.ForeignKey('menu_item_types.id'), nullable=False)  # MenuItemType foreign key
-
 class Table(db.Model):
-    __tablename__='tables'
-    id=db.Column(db.Integer,primary_key=True)
-    number=db.Column(db.Integer, nullable=False, unique=True)
-    capacity=db.Column(db.Integer, nullable=False)
+    __tablename__ = 'tables'
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.Integer, nullable=False, unique=True)
+    capacity = db.Column(db.Integer, nullable=False)
+
+
 class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
@@ -71,9 +41,32 @@ class Order(db.Model):
 
     # Add relationship to order details (the items in this order)
     details = db.relationship('OrderDetails', backref='order', lazy=True)
+    employee = db.relationship('Employee', backref='orders')  # Relationship to Employee
+
+
+
+class MenuItemType(db.Model):
+    __tablename__ = 'menu_item_types'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False)
+
+    # One-to-many relationship with MenuItem
+    items = db.relationship('MenuItem', backref='type', lazy=True)
+
+
+class MenuItem(db.Model):
+    __tablename__ = 'menu_items'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+
+    # Foreign keys to Menu and MenuItemType
+    menu_id = db.Column(db.Integer, db.ForeignKey('menus.id'), nullable=False)
+    menu_type_id = db.Column(db.Integer, db.ForeignKey('menu_item_types.id'), nullable=False)
+
 
 class OrderDetails(db.Model):
-    __tablename__='order_details'
-    id=db.Column(db.Integer, primary_key=True)
-    order_id=db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
-    item_id=db.Column(db.Integer, db.ForeignKey('menu_items.id'), nullable=False)
+    __tablename__ = 'order_details'
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
+    item_id = db.Column(db.Integer, db.ForeignKey('menu_items.id'), nullable=False)
