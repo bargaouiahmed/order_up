@@ -63,11 +63,15 @@ class Table(db.Model):
     number=db.Column(db.Integer, nullable=False, unique=True)
     capacity=db.Column(db.Integer, nullable=False)
 class Order(db.Model):
-    __tablename__='orders'
+    __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
-    employee_id=db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=False)
-    table_id=db.Column(db.Integer, db.ForeignKey('tables.id'))
-    finishes=db.Column(db.Boolean, nullable=False)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'), nullable=False)
+    table_id = db.Column(db.Integer, db.ForeignKey('tables.id'))
+    finished = db.Column(db.Boolean, nullable=False)
+
+    # Add relationship to order details (the items in this order)
+    details = db.relationship('OrderDetails', backref='order', lazy=True)
+
 class OrderDetails(db.Model):
     __tablename__='order_details'
     id=db.Column(db.Integer, primary_key=True)

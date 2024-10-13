@@ -11,8 +11,11 @@ with app.app_context():
 
     # Create an employee
     employee = Employee(name="Margot", employee_number="1234", password='password')
+    employee2 = Employee(name="john", employee_number='2345',password='john')
+    employee3=Employee(name='mido', employee_number='3456',password='mido')
     db.session.add(employee)
-
+    db.session.add(employee2)
+    db.session.add(employee3)
     # Create MenuItemType instances
     beverages = MenuItemType(name="Beverages")
     entrees = MenuItemType(name="Entrees")

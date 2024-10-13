@@ -1,30 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="space-y-8">  <!-- Space between sections -->
-    <div class="flex justify-around space-x-8">  <!-- Space between each flex element -->
-        <ul class="flex w-2/3 space-x-8 justify-start">  <!-- Adjusted spacing between list items -->
+<div class="space-y-8 my-5">
+    <div class="flex justify-around space-x-8">
+        <ul class="flex w-2/3 space-x-8 justify-start">
             <li><h2 class="text-gray-800 self-center text-2xl">ASSIGN TABLE</h2></li>
 
             <li class="rounded-xl">
-                <select class="p-2 rounded-md border border-gray-300">
-                    <option placeholder="Open Tables">Open tables</option>
-                    {% for table in tables %}
-                        <option>{{ table.number }}</option>
-                    {% endfor %}
-                </select>
-            </li>
-
-            <li class="rounded-xl">
-                <select class="p-2 rounded-md border border-gray-300">
-                    {% for server in servers %}
-                        <option>{{ server.name }}</option>
-                    {% endfor %}
-                </select>
-            </li>
-
-            <li>
                 <form method="POST">
+                    <select name="table_number" class="p-2 rounded-md border border-gray-300">
+                        <option value="" disabled selected hidden>Select a table</option>
+                        {% for table in tables %}
+                            <option value="{{ table.number }}">{{ table.number }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="server_name" class="p-2 rounded-md border border-gray-300">
+                        <option value="" disabled selected hidden>Select a Server</option>
+                        {% for server in servers %}
+                            <option value="{{ server.name }}">{{ server.name }}</option>
+                        {% endfor %}
+                    </select>
                     <button class="p-2 px-7 bg-blue-500 text-white rounded-md" type="submit">ASSIGN</button>
                 </form>
             </li>
@@ -32,11 +27,32 @@
 
         <div>
             <form method="POST" action="{{ url_for('session.logout') }}">
-                <button class="p-2 px-7 bg-blue-500 text-white rounded-md" type="submit">LOG OUT </button>
+                <button class="p-2 px-7 bg-orange-500 text-white rounded-md" type="submit">LOG OUT</button>
             </form>
         </div>
     </div>
 
-    <h2 class="my-8 text-2xl">YOUR OPEN ORDERS</h2> <!-- Added margin above the orders section -->
+    <h2 class="my-8 mx-10 px-10 text-2xl">YOUR OPEN ORDERS</h2>
+    <table class="table-auto w-2/3 ml-10">
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>Table {{ order.table_id }}</td>
+                <td>${{ order_prices[order.id] }}</td>
+                <td>
+                    <div class="flex justify-center space-x-2">
+                        <form method="POST" action="{{ url_for('orders.close_order', order_id=order.id) }}">
+                            <button class="p-2 px-7 border border-gray-400 rounded-md" type="submit">CLOSE TABLE</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('orders.add_to_order', order_id=order.id) }}">
+                            <input type="hidden" name="menu_item_id" value="1"> <!-- Hardcoded example -->
+                            <button class="p-2 px-7 border border-gray-400 rounded-md" type="submit">ADD TO ORDER</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
